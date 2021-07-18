@@ -7,14 +7,9 @@ namespace AdLib.Helpers
 {
     public static class AssemblyFixerUpper
     {
-        public static void Apply(AppDomain domain)
+        public static Assembly GetFNALib(string fnalib)
         {
-            domain.AssemblyResolve += FNALibSearcher;
-        }
-
-        private static Assembly FNALibSearcher(object sender, ResolveEventArgs args)
-        {
-            string path = Path.Combine(IOHelper.GetBaseDirectory(), "FNALibs", GetFNALibsKeyword(), args.Name + ".dll");
+            string path = Path.Combine(IOHelper.GetBaseDirectory(), "FNALibs", GetFNALibsKeyword(), fnalib + ".dll");
             return Assembly.LoadFrom(path);
         }
 
