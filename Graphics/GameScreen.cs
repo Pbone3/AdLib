@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 
 namespace AdLib.Graphics
 {
@@ -13,6 +14,7 @@ namespace AdLib.Graphics
         public Vector2 GetScale()
         {
             Vector2 scale = new Vector2();
+            throw new NotImplementedException();
         }
     }
 }
