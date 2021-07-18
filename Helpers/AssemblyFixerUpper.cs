@@ -1,16 +1,15 @@
 ﻿using System;
 using System.IO;
-using System.Reflection;
 using System.Runtime.InteropServices;
 
 namespace AdLib.Helpers
 {
     public static class AssemblyFixerUpper
     {
-        public static Assembly GetFNALib(string fnalib)
+        public static byte[] GetFNALib(string fnalib)
         {
             string path = Path.Combine(IOHelper.GetBaseDirectory(), "FNALibs", GetFNALibsKeyword(), fnalib + ".dll");
-            return Assembly.LoadFrom(path);
+            return File.ReadAllBytes(path);
         }
 
         public static string GetFNALibsKeyword()
