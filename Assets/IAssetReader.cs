@@ -4,11 +4,11 @@
     {
         public T GetDefaultValue();
 
-        public T Load( string path);
+        public T Load(string path, AssetManager manager);
 
-        public bool TryLoad(string path, out T asset)
+        public bool TryLoad(string path, AssetManager manager, out T asset)
         {
-            asset = Load(path);
+            asset = Load(path, manager);
 
             if (asset == GetDefaultValue())
                 return false;

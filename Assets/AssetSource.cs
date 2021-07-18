@@ -15,8 +15,8 @@ namespace AdLib.Assets
             OverrideFolder = overrideFolder;
         }
 
-        public string GetBaseFolder() => Path.Combine(Main.ContentPath, BaseFolder);
-        public string GetOverrideFolder() => Path.Combine(Main.ContentPath, ".overrides", OverrideFolder);
+        public string GetBaseFolder() => Path.Combine(GameInfo.GetContentPath(), BaseFolder);
+        public string GetOverrideFolder() => Path.Combine(GameInfo.GetContentPath(), ".overrides", OverrideFolder);
 
         public bool AssetExists(string path) => File.Exists(GetAssetPath(path));
         // This should return the absolute path (C:/blahblahblah/asset.png)

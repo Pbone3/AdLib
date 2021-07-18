@@ -6,13 +6,18 @@ namespace AdLib.Assets.AssetReaders
 {
     public class Texture2DReader : IAssetReader<Texture2D>, IDisposable
     {
-        public Texture2D Dummy = new Texture2D(Main.Instance.GraphicsDevice, 0, 0);
+        public Texture2D Dummy;
 
         public Texture2D GetDefaultValue() => Dummy;
 
         private bool disposed = false;
 
-        public Texture2D Load(string path)
+        public Texture2DReader(GraphicsDevice graphicsDevice)
+        {
+            Dummy = new Texture2D(graphicsDevice, 0, 0);
+        }
+
+        public Texture2D Load(string path, AssetManager manager)
         {
             Texture2D tex = Dummy;
 
@@ -20,7 +25,7 @@ namespace AdLib.Assets.AssetReaders
             {
                 try
                 {
-                    tex = Texture2D.FromStream(Main.Instance.GraphicsDevice, stream);
+                    tex = Texture2D.FromStream(manager.GraphicsDevice, stream);
                 }
                 catch (Exception e)
                 {

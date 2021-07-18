@@ -8,7 +8,7 @@ namespace AdLib.UI
         public virtual void Initialize()
         {
             Parent = null;
-            Body = new Body(default, Main.VirtualWidth, Main.VirtualHeight);
+            Body = new Body(default, GameInfo.VirtualWidth, GameInfo.VirtualHeight);
             Identifier = Guid.NewGuid();
         }
 
