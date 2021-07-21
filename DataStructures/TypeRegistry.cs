@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace AdLib.DataStructures
 {
-    public class TypeRegistry<T>
+    public class TypeRegistry<T> : IEnumerable<KeyValuePair<Type, T>>
     {
         public Dictionary<Type, T> RegistryObjects;
 
@@ -27,5 +28,9 @@ namespace AdLib.DataStructures
             instance = Get<TType>();
             return true;
         }
+
+        public IEnumerator<KeyValuePair<Type, T>> GetEnumerator() => RegistryObjects.GetEnumerator();
+
+        IEnumerator IEnumerable.GetEnumerator() => RegistryObjects.GetEnumerator();
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace AdLib.Assets
 {
-    public interface IAssetReader<T> where T : class
+    public interface IAssetReader<T>
     {
         public T GetDefaultValue();
 
@@ -10,7 +10,7 @@
         {
             asset = Load(path, manager);
 
-            if (asset == GetDefaultValue())
+            if (asset.Equals(GetDefaultValue()))
                 return false;
 
             return true;

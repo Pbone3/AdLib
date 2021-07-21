@@ -6,11 +6,7 @@ namespace AdLib.Helpers
 {
     public static class AssemblyFixerUpper
     {
-        public static byte[] GetFNALib(string fnalib)
-        {
-            string path = Path.Combine(IOHelper.GetBaseDirectory(), "FNALibs", GetFNALibsKeyword(), fnalib + ".dll");
-            return File.ReadAllBytes(path);
-        }
+        public static string GetFNALibsPath(string fnalib) => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "FNALibs", GetFNALibsKeyword(), fnalib + ".dll");
 
         public static string GetFNALibsKeyword()
         {
