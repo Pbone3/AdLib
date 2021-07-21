@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 
 namespace AdLib.Helpers
 {
+    [Obsolete("Doesn't work")]
     public static class AssemblyFixerUpper
     {
         public static byte[] GetFNALib(string fnalib)
