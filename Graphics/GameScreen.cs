@@ -11,9 +11,10 @@ namespace AdLib.Graphics
 
         }
 
-        public Vector2 GetScale()
+        public void GetScalingInfo(out Vector2 scale, out Vector2 position)
         {
-            Vector2 scale = new Vector2();
+            scale = new Vector2();
+            position = new Vector2();
             throw new NotImplementedException();
         }
     }

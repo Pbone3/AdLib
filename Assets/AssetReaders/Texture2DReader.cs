@@ -14,12 +14,12 @@ namespace AdLib.Assets.AssetReaders
 
         public Texture2DReader(GraphicsDevice graphicsDevice)
         {
-            Dummy = new Texture2D(graphicsDevice, 0, 0);
+            Dummy = new Texture2D(graphicsDevice, 1, 1);
         }
 
         public Texture2D Load(string path, AssetManager manager)
         {
-            Texture2D tex = Dummy;
+            Texture2D tex = GetDefaultValue();
 
             using (FileStream stream = File.OpenRead(path))
             {
@@ -29,7 +29,7 @@ namespace AdLib.Assets.AssetReaders
                 }
                 catch (Exception e)
                 {
-                    throw new Exception("Issue occured while loading Texture2D from " + path + ": " + e.ToString());
+                    throw new AssetLoadingException(nameof(Texture2D), path, e);
                 }
             }
 

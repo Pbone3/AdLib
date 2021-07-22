@@ -26,11 +26,17 @@ namespace AdLib.IO.Logging
             File.WriteAllText(LogPath, "");
         }
 
-        public void WriteLine(string message, string type) =>
-            File.AppendAllText(LogPath, $"[{DateTime.Now:T}] [{type}]: {message}");
+        public void WriteLine(string message, string type, bool newLine = true) =>
+            File.AppendAllText(LogPath, 
+                (newLine ? "\n" : "") + $"[{DateTime.Now:T}] [{type}]: {message}");
 
+        // NewLine-less overloads for FNALoggerEXT
         public void WriteInfo(string message) => WriteLine(message, "INFO");
         public void WriteWarning(string message) => WriteLine(message, "WARNING");
         public void WriteError(string message) => WriteLine(message, "ERROR");
+
+        public void WriteInfo(string message, bool newLine = true) => WriteLine(message, "INFO", newLine);
+        public void WriteWarning(string message, bool newLine = true) => WriteLine(message, "WARNING", newLine);
+        public void WriteError(string message, bool newLine = true) => WriteLine(message, "ERROR", newLine);
     }
 }

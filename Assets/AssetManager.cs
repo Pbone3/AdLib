@@ -1,4 +1,5 @@
-﻿using AdLib.DataStructures;
+﻿using AdLib.Assets.AssetReaders;
+using AdLib.DataStructures;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -19,10 +20,15 @@ namespace AdLib.Assets
         public AssetReaderRegistry ReaderRegistry;
         public GraphicsDevice GraphicsDevice;
 
-        public AssetManager(GraphicsDevice graphicsDevice)
+        public AssetManager(GraphicsDevice graphicsDevice, bool registerDefaultLoaders)
         {
             ReaderRegistry = new AssetReaderRegistry();
             GraphicsDevice = graphicsDevice;
+
+            if (registerDefaultLoaders)
+            {
+                ReaderRegistry.Add(new Texture2DReader(GraphicsDevice));
+            }
         }
 
         public AssetLoader GetLoader(AssetSource source) => new AssetLoader(this, source);
