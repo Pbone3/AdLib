@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace AdLib.Assets
 {
-    /* AssetManager distributes AssetLoader instances and actually loads Assets
+    /* AssetManager distributes AssetLoader instances and stores AssetReaders, and distributes asset loading requests to different AssetReaders
      * AssetLoader instances are basically a buffer between calling for an Asset load and actually loading it,
      * and do things like turn a part of the path ("Items/IronSword") to a full path ("C:/BlahBlahBlah/Etc/Content/Vanilla/Items/IronSword")
      */
