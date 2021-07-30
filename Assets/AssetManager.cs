@@ -28,6 +28,7 @@ namespace AdLib.Assets
             if (registerDefaultLoaders)
             {
                 ReaderRegistry.Add(new Texture2DReader(GraphicsDevice));
+                ReaderRegistry.Add<SoundEffectReader>();
             }
         }
 
