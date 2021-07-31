@@ -37,7 +37,7 @@ namespace AdLib.Assets
         public bool TryLoadAsset<T>(string path, out T asset) => GetAssetReader<T>().TryLoad(path, this, out asset);
         public T LoadAsset<T>(string path) => GetAssetReader<T>().Load(path, this);
 
-        public IAssetReader<T> GetAssetReader<T>()  => ReaderRegistry.GetAssetReader<T>();
+        public IAssetReader<T> GetAssetReader<T>() => ReaderRegistry.GetAssetReader<T>();
 
         public void Dispose()
         {
