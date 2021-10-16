@@ -10,8 +10,6 @@ namespace AdLib.Assets.AssetReaders
 
         public Texture2D GetDefaultValue() => Dummy;
 
-        private bool disposed = false;
-
         public Texture2DReader(GraphicsDevice graphicsDevice)
         {
             Dummy = new Texture2D(graphicsDevice, 1, 1);
@@ -39,13 +37,12 @@ namespace AdLib.Assets.AssetReaders
         public void Dispose()
         {
             Dummy.Dispose();
-            disposed = true;
+            GC.SuppressFinalize(this);
         }
 
         ~Texture2DReader()
         {
-            if (!disposed)
-                Dispose();
+            Dispose();
         }
     }
 }

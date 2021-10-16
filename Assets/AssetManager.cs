@@ -28,6 +28,7 @@ namespace AdLib.Assets
             if (registerDefaultLoaders)
             {
                 ReaderRegistry.Add(new Texture2DReader(GraphicsDevice));
+                ReaderRegistry.Add(new EffectReader(GraphicsDevice));
                 ReaderRegistry.Add<SoundEffectReader>();
             }
         }
@@ -46,6 +47,8 @@ namespace AdLib.Assets
                 if (kvp.Value is IDisposable disposable)
                     disposable.Dispose();
             }
+
+            GC.SuppressFinalize(this);
         }
     }
 }
