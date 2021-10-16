@@ -1,10 +1,62 @@
 ﻿using SDL2;
 using System;
+using System.Collections.Generic;
+using Tomlet;
+using Tomlet.Exceptions;
+using Tomlet.Models;
 
 namespace AdLib.Helpers
 {
     public static class IOHelper
     {
+		public static Dictionary<string, object> FlattenTomlDocument(TomlDocument document)
+        {
+			Dictionary<string, object> data = new Dictionary<string, object>();
+
+			foreach (KeyValuePair<string, TomlValue> kvp in document.Entries)
+            {
+				FlattenTomlValue(kvp.Key, kvp.Value, ref data);
+            }
+
+			return data;
+        }
+
+		private static Type[] types = new Type[] {
+				typeof(string), typeof(bool), typeof(byte), typeof(sbyte), typeof(ushort), typeof(short), typeof(uint), typeof(int), typeof(ulong), typeof(long),
+				typeof(double), typeof(long), typeof(double), typeof(float), typeof(DateTime), typeof(DateTimeOffset), typeof(TimeSpan)
+			};
+
+		public static void FlattenTomlValue(string key, TomlValue toml, ref Dictionary<string, object> data)
+        {
+			if (toml is TomlTable table)
+			{
+				foreach (KeyValuePair<string, TomlValue> kvp in table.Entries)
+				{
+					// key + "." + kvp.Key is needed to the name of the table is added to the value's key
+					FlattenTomlValue(key + "." + kvp.Key, kvp.Value, ref data);
+				}
+
+				return;
+			}
+
+
+			// Jump through a few hoops to get the value
+			for (int i = 0; i < types.Length; i++)
+            {
+				Type t = types[i];
+
+                try
+                {
+					data.Add(key, TomletMain.To(t, toml));
+					break;
+				}
+				catch (TomlTypeMismatchException)
+                {
+					continue;
+                }
+            }
+		}
+
 		// From https://github.com/FNA-XNA/FNA/blob/master/src/FNAPlatform/SDL2_FNAPlatform.cs
 		public static string GetBaseDirectory()
 		{

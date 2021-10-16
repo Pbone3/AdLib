@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
-using AdLib.DataStructures;
+using AdLib.Collections;
 
 namespace AdLib.IO.SaveFiles.Content
 {

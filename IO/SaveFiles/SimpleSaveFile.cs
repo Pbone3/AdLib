@@ -1,4 +1,5 @@
-﻿using AdLib.DataStructures;
+﻿using AdLib.Collections;
+using AdLib.DataStructures;
 
 namespace AdLib.IO.SaveFiles
 {
