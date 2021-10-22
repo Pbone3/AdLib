@@ -8,6 +8,7 @@ namespace AdLib.Helpers
     {
         public const double TwoPiOver3 = 2d * Math.PI / 3d;
         public const double TwoPiOver4Point5 = (2d * Math.PI) / 4.5d;
+
         public const double EaseInBack_Overshoot = 1.70158d;
         public const double EaseInBack_OvershootPlus1 = EaseInBack_Overshoot + 1d;
         public const double EaseInBack_SomethingOrOther = EaseInBack_Overshoot * 1.525d;

@@ -1,9 +1,6 @@
-﻿using Microsoft.Xna.Framework;
-
-namespace AdLib
+﻿namespace AdLib
 {
-    public interface IUpdateManager : IManager<IUpdateManager>
+    public interface IUpdateManager : IUpdatable, IManager<IUpdateManager>
     {
-        public void Update(GameTime gameTime);
     }
 }

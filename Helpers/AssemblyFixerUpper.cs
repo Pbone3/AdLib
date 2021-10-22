@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 
 namespace AdLib.Helpers
 {
+    [Obsolete]
     public static class AssemblyFixerUpper
     {
         public static string GetFNALibsPath(string fnalib) => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "FNALibs", GetFNALibsKeyword(), fnalib + ".dll");

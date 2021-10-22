@@ -1,10 +1,6 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-
-namespace AdLib
+﻿namespace AdLib
 {
-    public interface IDrawManager : IManager<IDrawManager>
+    public interface IDrawManager : IDrawable, IManager<IDrawManager>
     {
-        public void Draw(SpriteBatch spriteBatch, GameTime gameTime);
     }
 }

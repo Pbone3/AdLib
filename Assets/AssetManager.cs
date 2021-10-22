@@ -20,7 +20,7 @@ namespace AdLib.Assets
         public AssetReaderRegistry ReaderRegistry;
         public GraphicsDevice GraphicsDevice;
 
-        public AssetManager(GraphicsDevice graphicsDevice, bool registerDefaultLoaders)
+        public AssetManager(GraphicsDevice graphicsDevice, bool registerDefaultLoaders = true)
         {
             ReaderRegistry = new AssetReaderRegistry();
             GraphicsDevice = graphicsDevice;
@@ -39,6 +39,11 @@ namespace AdLib.Assets
         public T LoadAsset<T>(string path) => GetAssetReader<T>().Load(path, this);
 
         public IAssetReader<T> GetAssetReader<T>() => ReaderRegistry.GetAssetReader<T>();
+
+        ~AssetManager()
+        {
+            Dispose();
+        }
 
         public void Dispose()
         {

@@ -1,6 +1,8 @@
-﻿using SDL2;
+﻿using Microsoft.Xna.Framework.Audio;
+using SDL2;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Tomlet;
 using Tomlet.Exceptions;
 using Tomlet.Models;
@@ -108,6 +110,140 @@ namespace AdLib.Helpers
 				result = Environment.CurrentDirectory;
 			}
 			return result;
+		}
+
+		// From https://github.com/FNA-XNA/FNA/blob/master/src/Audio/SoundEffect.cs
+		public static void ReadWavFileFromStream(Stream stream, out int outSampleRate, out byte[] outDataBuffer, out AudioChannels outChannels)
+        {
+			// Sample data
+			byte[] data;
+
+			// WaveFormatEx data
+			ushort wFormatTag;
+			ushort nChannels;
+			uint nSamplesPerSec;
+			uint nAvgBytesPerSec;
+			ushort nBlockAlign;
+			ushort wBitsPerSample;
+			// ushort cbSize;
+
+			int samplerLoopStart = 0;
+			int samplerLoopEnd = 0;
+
+			using (BinaryReader reader = new BinaryReader(stream))
+			{
+				// RIFF Signature
+				string signature = new string(reader.ReadChars(4));
+				if (signature != "RIFF")
+				{
+					throw new NotSupportedException("Specified stream is not a wave file.");
+				}
+
+				reader.ReadUInt32(); // Riff Chunk Size
+
+				string wformat = new string(reader.ReadChars(4));
+				if (wformat != "WAVE")
+				{
+					throw new NotSupportedException("Specified stream is not a wave file.");
+				}
+
+				// WAVE Header
+				string format_signature = new string(reader.ReadChars(4));
+				while (format_signature != "fmt ")
+				{
+					reader.ReadBytes(reader.ReadInt32());
+					format_signature = new string(reader.ReadChars(4));
+				}
+
+				int format_chunk_size = reader.ReadInt32();
+
+				wFormatTag = reader.ReadUInt16();
+				nChannels = reader.ReadUInt16();
+				nSamplesPerSec = reader.ReadUInt32();
+				nAvgBytesPerSec = reader.ReadUInt32();
+				nBlockAlign = reader.ReadUInt16();
+				wBitsPerSample = reader.ReadUInt16();
+
+				// Reads residual bytes
+				if (format_chunk_size > 16)
+				{
+					reader.ReadBytes(format_chunk_size - 16);
+				}
+
+				// data Signature
+				string data_signature = new string(reader.ReadChars(4));
+				while (data_signature.ToLowerInvariant() != "data")
+				{
+					reader.ReadBytes(reader.ReadInt32());
+					data_signature = new string(reader.ReadChars(4));
+				}
+				if (data_signature != "data")
+				{
+					throw new NotSupportedException("Specified wave file is not supported.");
+				}
+
+				int waveDataLength = reader.ReadInt32();
+				data = reader.ReadBytes(waveDataLength);
+
+				// Scan for other chunks
+				while (reader.PeekChar() != -1)
+				{
+					char[] chunkIDChars = reader.ReadChars(4);
+					if (chunkIDChars.Length < 4)
+					{
+						break; // EOL!
+					}
+					byte[] chunkSizeBytes = reader.ReadBytes(4);
+					if (chunkSizeBytes.Length < 4)
+					{
+						break; // EOL!
+					}
+					string chunk_signature = new string(chunkIDChars);
+					int chunkDataSize = BitConverter.ToInt32(chunkSizeBytes, 0);
+					if (chunk_signature == "smpl") // "smpl", Sampler Chunk Found
+					{
+						reader.ReadUInt32(); // Manufacturer
+						reader.ReadUInt32(); // Product
+						reader.ReadUInt32(); // Sample Period
+						reader.ReadUInt32(); // MIDI Unity Note
+						reader.ReadUInt32(); // MIDI Pitch Fraction
+						reader.ReadUInt32(); // SMPTE Format
+						reader.ReadUInt32(); // SMPTE Offset
+						uint numSampleLoops = reader.ReadUInt32();
+						int samplerData = reader.ReadInt32();
+
+						for (int i = 0; i < numSampleLoops; i += 1)
+						{
+							reader.ReadUInt32(); // Cue Point ID
+							reader.ReadUInt32(); // Type
+							int start = reader.ReadInt32();
+							int end = reader.ReadInt32();
+							reader.ReadUInt32(); // Fraction
+							reader.ReadUInt32(); // Play Count
+
+							if (i == 0) // Grab loopStart and loopEnd from first sample loop
+							{
+								samplerLoopStart = start;
+								samplerLoopEnd = end;
+							}
+						}
+
+						if (samplerData != 0) // Read Sampler Data if it exists
+						{
+							reader.ReadBytes(samplerData);
+						}
+					}
+					else // Read unwanted chunk data and try again
+					{
+						reader.ReadBytes(chunkDataSize);
+					}
+				}
+				// End scan
+			}
+
+			outSampleRate = (int)nSamplesPerSec;
+			outDataBuffer = data;
+			outChannels = (AudioChannels)nChannels;
 		}
 	}
 }
