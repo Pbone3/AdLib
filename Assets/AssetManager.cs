@@ -1,4 +1,5 @@
 ﻿using AdLib.Assets.AssetReaders;
+using AdLib.Audio.Reading;
 using AdLib.DataStructures;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -18,18 +19,16 @@ namespace AdLib.Assets
         }
 
         public AssetReaderRegistry ReaderRegistry;
-        public GraphicsDevice GraphicsDevice;
 
-        public AssetManager(GraphicsDevice graphicsDevice, bool registerDefaultLoaders = true)
+        public AssetManager(GraphicsDevice graphicsDevice, SoundReaderManager soundReaderManager, bool registerDefaultLoaders = true)
         {
             ReaderRegistry = new AssetReaderRegistry();
-            GraphicsDevice = graphicsDevice;
 
             if (registerDefaultLoaders)
             {
-                ReaderRegistry.Add(new Texture2DReader(GraphicsDevice));
-                ReaderRegistry.Add(new EffectReader(GraphicsDevice));
-                ReaderRegistry.Add<SoundEffectReader>();
+                ReaderRegistry.Add(new Texture2DReader(graphicsDevice));
+                ReaderRegistry.Add(new EffectReader(graphicsDevice));
+                ReaderRegistry.Add(new CachedSoundDataReader(soundReaderManager));
             }
         }
 

@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Audio;
 
 namespace AdLib.Audio
 {
-    class CachedSoundResource : ISoundResource
+    public class CachedSoundResource : ISoundResource
     {
         public Identifier Id { get; set; }
         public int SampleRate { get; set; }

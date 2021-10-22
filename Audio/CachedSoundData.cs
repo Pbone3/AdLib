@@ -17,5 +17,7 @@ namespace AdLib.Audio
             Channels = channels;
             Id = id;
         }
+
+        public CachedSoundResource CreateSoundResourch() => new CachedSoundResource(this);
     }
 }

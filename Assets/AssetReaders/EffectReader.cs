@@ -17,18 +17,18 @@ namespace AdLib.Assets.AssetReaders
 
         public Effect Load(string path, AssetManager manager)
         {
-            Effect tex = GetDefaultValue();
+            Effect fx = GetDefaultValue();
 
             try
             {
-                tex = new Effect(Dummy.GraphicsDevice, File.ReadAllBytes(path));
+                fx = new Effect(Dummy.GraphicsDevice, File.ReadAllBytes(path));
             }
             catch (Exception e)
             {
-                throw new AssetLoadingException(nameof(Texture2D), path, e);
+                throw new AssetLoadingException(nameof(Effect), path, e);
             }
 
-            return tex;
+            return fx;
         }
 
         public void Dispose()

@@ -9,7 +9,7 @@ namespace AdLib.Audio.Reading.SoundFileReaders
     {
         public string Extension => "wav";
 
-        public int DataStartOffset => 44;
+        public int DataStartOffset => 44 * 8; // 44 Bytes
 
         public CachedSoundData LoadCached(string path)
         {

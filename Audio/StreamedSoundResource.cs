@@ -1,11 +1,12 @@
 ﻿using AdLib.Audio.Reading;
 using AdLib.DataStructures;
 using Microsoft.Xna.Framework.Audio;
+using System;
 using System.IO;
 
 namespace AdLib.Audio
 {
-    public class StreamedSoundResource : ISoundResource
+    public class StreamedSoundResource : ISoundResource, IDisposable
     {
         public Identifier Id { get; set; }
         public int SampleRate { get; set; }
@@ -41,5 +42,16 @@ namespace AdLib.Audio
         }
 
         public byte[] GetMoreSamples() => SoundReaderManager.GetMoreSamples(Extension, Offset, Stream);
+
+        public void Dispose()
+        {
+            Stream.Dispose();
+            GC.SuppressFinalize(this);
+        }
+
+        ~StreamedSoundResource()
+        {
+            Dispose();
+        }
     }
 }

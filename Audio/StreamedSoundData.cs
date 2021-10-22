@@ -26,5 +26,7 @@ namespace AdLib.Audio
             SoundReaderManager = soundReaderManager;
             Extension = extension;
         }
+
+        public StreamedSoundResource CreateSoundResource() => new StreamedSoundResource(this)
     }
 }
