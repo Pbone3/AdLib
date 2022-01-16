@@ -8,40 +8,23 @@ namespace AdLib.Audio
 {
     public class StreamedSoundResource : ISoundResource, IDisposable
     {
-        public Identifier Id { get; set; }
-        public int SampleRate { get; set; }
-        public AudioChannels Channels { get; set; }
+        public Identifier Id { get => Data.Id; set => Data.Id = value; }
+        public int SampleRate { get => Data.SampleRate; set => Data.SampleRate = value; }
+        public AudioChannels Channels { get => Data.Channels; set => Data.Channels = value; }
 
-        public string Extension;
-        public int Offset;
+        public StreamedSoundData Data;
         public Stream Stream;
         public SoundReaderManager SoundReaderManager;
 
-        public StreamedSoundResource(Identifier id, string path, int sampleRate, AudioChannels channels, string extension, int offset, SoundReaderManager soundReaderManager)
-        {
-            Id = id;
-            SampleRate = sampleRate;
-            Channels = channels;
-            Extension = extension;
-            Offset = offset;
-            SoundReaderManager = soundReaderManager;
-
-            Stream = File.OpenRead(path);
-        }
-
         public StreamedSoundResource(StreamedSoundData data)
         {
-            Id = data.Id;
-            SampleRate = data.SampleRate;
-            Channels = data.Channels;
-            Extension = data.Extension;
-            Offset = data.Offset;
+            Data = data;
             SoundReaderManager = data.SoundReaderManager;
 
             Stream = File.OpenRead(data.Path);
         }
 
-        public byte[] GetMoreSamples() => SoundReaderManager.GetMoreSamples(Extension, Offset, Stream);
+        public byte[] GetMoreSamples() => SoundReaderManager.GetMoreSamples(ref Data, Stream);
 
         public void Dispose()
         {

@@ -19,10 +19,12 @@ namespace AdLib.Assets
         }
 
         public AssetReaderRegistry ReaderRegistry;
+        public GraphicsDevice GraphicsDevice;
 
         public AssetManager(GraphicsDevice graphicsDevice, SoundReaderManager soundReaderManager, bool registerDefaultLoaders = true)
         {
             ReaderRegistry = new AssetReaderRegistry();
+            GraphicsDevice = graphicsDevice;
 
             if (registerDefaultLoaders)
             {

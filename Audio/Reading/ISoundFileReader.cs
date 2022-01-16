@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Audio;
+﻿using AdLib.DataStructures;
+using Microsoft.Xna.Framework.Audio;
 using System.IO;
 
 namespace AdLib.Audio.Reading
@@ -8,9 +9,9 @@ namespace AdLib.Audio.Reading
         public string Extension { get; }
         public int DataStartOffset { get; }
 
-        public CachedSoundData LoadCached(string path);
+        public CachedSoundData LoadCached(Identifier id, string path);
 
         public int GetDetailsForStreamedSound(out int sampleRate, out AudioChannels channels);
-        public byte[] GetMoreStreamedSamples(int offset, Stream stream);
+        public byte[] GetMoreStreamedSamples(ref StreamedSoundData data, Stream stream);
     }
 }

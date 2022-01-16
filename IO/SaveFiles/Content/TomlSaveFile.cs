@@ -12,7 +12,7 @@ namespace AdLib.IO.SaveFiles.Content
     {
         public override string GetExtension() => "toml";
 
-        private readonly object _lock;
+        private readonly object _lock = new object();
 
         public override void Load(string path)
         {

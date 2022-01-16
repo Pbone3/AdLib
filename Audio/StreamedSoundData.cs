@@ -27,6 +27,6 @@ namespace AdLib.Audio
             Extension = extension;
         }
 
-        public StreamedSoundResource CreateSoundResource() => new StreamedSoundResource(this)
+        public StreamedSoundResource CreateSoundResource() => new StreamedSoundResource(this);
     }
 }

@@ -8,6 +8,5 @@ namespace AdLib.Audio.Music
 {
     public class MusicPlayer
     {
-        public SoundRepository <>
     }
 }

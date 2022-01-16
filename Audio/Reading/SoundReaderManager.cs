@@ -26,34 +26,35 @@ namespace AdLib.Audio.Reading
         public void AddReader<T>() where T : ISoundFileReader, new() => AddReader(new T());
         public void AddReader(ISoundFileReader instance) => Readers.Add(instance.Extension, instance);
 
-        public CachedSoundData LoadCachedSound(string path) => LoadCachedSound(path, path.Split('.').Last());
+        public CachedSoundData LoadCachedSound(Identifier id, string path) => LoadCachedSound(id, path, path.Split('.').Last());
 
-        public CachedSoundData LoadCachedSound(string path, string ext)
+        public CachedSoundData LoadCachedSound(Identifier id, string path, string ext)
         {
             if (!Readers.TryGetValue(ext.ToLower(), out ISoundFileReader reader))
-                throw new AssetLoadingException("Cached Sound", path, new Exception("Reader for " + ext.ToLower() + "files doesn't exist."));
+                throw new AssetLoadingException("Cached Sound", path, new Exception("Reader for " + ext.ToLower() + " files doesn't exist."));
 
-            return reader.LoadCached(path);
+            return reader.LoadCached(id, path);
         }
 
-        public StreamedSoundData LoadStreamedSound(string path) => LoadStreamedSound(path, path.Split('.').Last());
+        public StreamedSoundData LoadStreamedSound(Identifier id, string path) => LoadStreamedSound(id, path, path.Split('.').Last());
 
-        public StreamedSoundData LoadStreamedSound(string path, string ext)
+        public StreamedSoundData LoadStreamedSound(Identifier id, string path, string ext)
         {
             if (!Readers.TryGetValue(ext.ToLower(), out ISoundFileReader reader))
-                throw new AssetLoadingException("Streamed Sound", path, new Exception("Reader for " + ext.ToLower() + "files doesn't exist."));
+                throw new AssetLoadingException("Streamed Sound", path, new Exception("Reader for " + ext.ToLower() + " files doesn't exist."));
 
-            // TODO DEFAULT IDENTIFIER
             reader.GetDetailsForStreamedSound(out int sampleRate, out AudioChannels channels);
-            return new StreamedSoundData(Identifier.Default, path, sampleRate, channels, reader.DataStartOffset, this, ext);
+            return new StreamedSoundData(id, path, sampleRate, channels, reader.DataStartOffset, this, ext);
         }
 
-        public byte[] GetMoreSamples(string ext, int offset, Stream stream)
+        public byte[] GetMoreSamples(ref StreamedSoundData data, Stream stream) => GetMoreSamples(data.Extension, ref data, stream);
+
+        public byte[] GetMoreSamples(string ext, ref StreamedSoundData data, Stream stream)
         {
             // This should never throw
             ISoundFileReader reader = Readers[ext.ToLower()];
 
-            return reader.GetMoreStreamedSamples(offset, stream);
+            return reader.GetMoreStreamedSamples(ref data, stream);
         }
     }
 }

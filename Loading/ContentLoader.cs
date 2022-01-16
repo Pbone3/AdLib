@@ -24,7 +24,7 @@ namespace AdLib.Loading
             // 3. LOAD ContentPack content
 
             // Step 1: REGISTER. Find ContentPacks that you need to load
-            List<(string folderPath, string assemblyPath)> contentPackPaths = GetContentPackPaths();
+            List<(string folderPath, string assemblyPath)> contentPackPaths = /*GetContentPackPaths();*/ null;
 
             // Step 2: INITIALIZE. Initialize the ContentPack class, and load metadata
             foreach ((string folderPath, string assemblyPath) in contentPackPaths)
@@ -85,7 +85,7 @@ namespace AdLib.Loading
             LoadedContentPacks.Clear();
         }
 
-        public static List<(string folderPath, string assemblyPath)> GetContentPackPaths()
+        /*public static List<(string folderPath, string assemblyPath)> GetContentPackPaths()
         {
             List<(string folderPath, string assemblyPath)> finalPaths = new List<(string folderPath, string assemblyPath)>();
             string[] folders = Directory.GetDirectories(GameInfo.GetContentPath());
@@ -108,6 +108,6 @@ namespace AdLib.Loading
             }
 
             return finalPaths;
-        }
+        }*/
     }
 }
